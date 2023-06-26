@@ -1,6 +1,7 @@
 # Bug Issues can find in this link:https://chat.openai.com/share/6c633683-cb1f-40f0-a46f-255a46d6bd07
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config[
@@ -8,6 +9,8 @@ app.config[
 ] = "postgresql://postgres:061010@localhost:5432/example"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
+
+migrate = Migrate(app, db)
 
 
 class Person(db.Model):
@@ -19,8 +22,8 @@ class Person(db.Model):
         return f"<Person ID: {self.id}, name: {self.name}>"
 
 
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
 
 @app.route("/")
